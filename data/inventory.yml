@@ -1,0 +1,29 @@
+inventory:
+  - R12:
+    - type: Rose
+      qty: 5
+      price: 6.99
+    - type: Rose
+      qty: 10
+      price: 12.99
+
+  - L09:
+    - type: Lily
+      qty: 3
+      price: 9.95
+    - type: Lily
+      qty: 6
+      price: 16.95
+    - type: Lily
+      qty: 9
+      price: 24.95
+  - T58:
+    - type: Tulip
+      qty: 3
+      price: 5.95
+    - type: Tulip
+      qty: 5
+      price: 9.95
+    - type: Tulip
+      qty: 9
+      price: 16.99
