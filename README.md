@@ -16,6 +16,16 @@ For example to ask for 15 L09 bundles, you would enter:
 15 L09 
 ```
 
+Hit Ctrl-C to finish.
+
+## Piping orders
+
+You can also pipe in a file containing all the orders
+
+```
+cat sample/order.txt | bin/flower_shop
+```
+
 ## Running the test suite
 
 ```

@@ -22,8 +22,10 @@ class CLI
     line = gets
     if line =~ /(\d+) ([A-Z]\d+)/
       yield Regexp.last_match[1], Regexp.last_match[2]
+    elsif line.nil?
+      raise SignalException.new("USR1")
     else
-      yield nil, nil
+      raise StandardError, "Invalid line: format <qty> <type>"
     end
   end
 
@@ -46,20 +48,22 @@ class CLI
 
     puts "Enter the quantity and bundle type:"
 
-    scan do |qty, type|
-      if qty && type
-        if bundles.keys.include?(type)
+    begin
+      scan do |qty, type|
+        if qty && type
+          raise StandardError, "Bundle code not found" unless bundles.keys.include?(type)
           bundle = bundles[type]
 
           cart = FlowerShop::Cart.new
           cart.add_bundle(qty.to_i, bundle)
           puts format(cart, bundle)
-        else
-          puts "Bundle code not found"
         end
-      else
-        puts "Invalid line: format <qty> <type>"
       end
-    end
+    rescue StandardError => e
+      puts e
+    end while(1)
+  rescue SignalException => e
+    puts "\n"
+    exit(0)
   end
 end
