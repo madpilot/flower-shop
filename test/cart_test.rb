@@ -5,7 +5,7 @@ require 'minitest/autorun'
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib', 'flower_shop'))
 
 module FlowerShop
-  class BundleTest < MiniTest::Test
+  class CartTest < MiniTest::Test
     def test_bundle_r12
       bundle = Bundle.new('R12')
       bundle.flowers = [
@@ -13,8 +13,9 @@ module FlowerShop
         Rose.new(10, 12.99)
       ]
 
-      cart = bundle.calculate(10)
-      assert_equal 'R12', cart.code
+      cart = Cart.new
+      cart.add_bundle(10, bundle)
+
       assert_equal 1, cart.number_of_bundles
       assert_equal 10, cart.number_of_flowers
       assert_equal 12.99, (cart.price * 100).to_i.to_f / 100.0
@@ -32,9 +33,9 @@ module FlowerShop
         Lily.new(9, 24.95)
       ]
 
-      cart = bundle.calculate(15)
+      cart = Cart.new
+      cart.add_bundle(15, bundle)
 
-      assert_equal 'L09', cart.code
       assert_equal 2, cart.number_of_bundles
       assert_equal 15, cart.number_of_flowers
       assert_equal 41.90, (cart.price * 100).to_i.to_f / 100.0
@@ -56,9 +57,9 @@ module FlowerShop
         Tulip.new(9, 16.99)
       ]
 
-      cart = bundle.calculate(13)
+      cart = Cart.new
+      cart.add_bundle(13, bundle)
 
-      assert_equal 'T58', cart.code
       assert_equal 3, cart.number_of_bundles
       assert_equal 13, cart.number_of_flowers
       assert_equal 25.85, (cart.price * 100).to_i.to_f / 100.0

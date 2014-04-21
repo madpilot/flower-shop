@@ -32,9 +32,9 @@ class CLI
     "$" + ("%.02f" % price)
   end
 
-  def self.format(result)
-    res = "#{result.number_of_flowers} x #{result.code}: #{format_price(result.price)}\n"
-    result.items.each do |item|
+  def self.format(cart, bundle)
+    res = "#{cart.number_of_flowers} x #{bundle.code}: #{format_price(cart.price)}\n"
+    cart.items.each do |item|
       res += "\t#{item.qty} x #{item.number_of_flowers / item.qty}: #{format_price(item.individual_price)}\n"
     end
     res
@@ -49,7 +49,11 @@ class CLI
     scan do |qty, type|
       if qty && type
         if bundles.keys.include?(type)
-          puts format(bundles[type].calculate(qty.to_i))
+          bundle = bundles[type]
+
+          cart = FlowerShop::Cart.new
+          cart.add_bundle(qty.to_i, bundle)
+          puts format(cart, bundle)
         else
           puts "Bundle code not found"
         end
