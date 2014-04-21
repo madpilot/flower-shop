@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require File.join(File.dirname(__FILE__), '..', 'lib', 'flower_shop')
-require File.join(File.dirname(__FILE__), '..', 'lib', 'cli')
+require File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib', 'flower_shop'))
+require File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib', 'cli'))
 
 CLI.run(ARGV)

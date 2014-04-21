@@ -24,14 +24,14 @@ module FlowerShop
 
       number = numbers.pop
       limit = limits.pop
-      
+
       if(number + 1 > limit)
-        numbers = increment_and_carry(numbers, limits)  
+        numbers = increment_and_carry(numbers, limits)
         numbers.push(0)
       else
         numbers.push(number + 1)
       end
-      
+
       numbers
     end
 
@@ -43,7 +43,7 @@ module FlowerShop
     # use a more optimised algorithm
     def calculate(qty)
       flowers = self.flowers.sort { |x, y| x.qty <=> y.qty }
-      
+
       # We can cull some of the number space, as we know that
       # there is a maximum number (qty required / qty in the bundle)
       # for each of the bundles. We can also ignore the state where
@@ -60,23 +60,16 @@ module FlowerShop
         current = self.increment_and_carry(current, max_bundles)
         quantities << current
       end while current.inject(0) { |t, v| t + v } < max
-      
-      results = []
+
+      carts = []
       quantities.map do |mask|
-        r = { total: 0, bundles: 0, flowers: [], price: 0 }
-       
+        cart = Cart.new(self.code)
         mask.each_with_index do |quantity, index|
-          r[:total] += flowers[index].qty * quantity
-          r[:bundles] += quantity
-          r[:price] += flowers[index].price * quantity
-          r[:flowers] << {
-            flower: flowers[index],
-            qty: quantity
-          }
+          cart.add_item(quantity, flowers[index])
         end
-        results << r if r[:total] == qty
+        carts << cart if cart.number_of_flowers == qty
       end
-      results.sort{ |x, y| x[:bundles] <=> y[:bundles] }.first
+      carts.sort{ |x, y| x.number_of_bundles <=> y.number_of_bundles }.first
     end
   end
 end
